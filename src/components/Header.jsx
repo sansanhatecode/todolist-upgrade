@@ -29,13 +29,13 @@ class Header extends React.Component {
     }
 
     render(){
-        const {job} = this.state;
+        const {currentJob} = this.state;
         return (
             <div>
                 <input 
                     className="px-8 py-2 w-[400px] rounded-t-lg border-red-200 border-b-2"
                     type="text"
-                    value={job}
+                    value={currentJob}
                     placeholder="Bạn cần làm công việc gì?"
                     onChange = {this.onChangeInput}
                     onKeyDown = {this.handleKeyDown}
