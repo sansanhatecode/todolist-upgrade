@@ -11,19 +11,21 @@ class App extends React.Component {
       jobs: ["học bài", "đi ngủ"],
     }
   }
+
+  //them cong viec moi
+  handleAdd = (addItem) => {
+    const {jobs} = this.state;
+    const newJobs = [...jobs, addItem];
+    this.setState({
+      jobs: newJobs
+    });
+  }
+  
   render() {
     const {
       // currentJob,
       jobs
     } = this.state;
-
-    //them cong viec moi
-    const handleAdd = (addItem) => {
-      const newJobs = [...jobs, addItem]
-      this.setState({
-        jobs: newJobs
-      });
-    }
 
     return (
       <div className="flex flex-col pt-20 items-center bg-slate-100 h-screen">
