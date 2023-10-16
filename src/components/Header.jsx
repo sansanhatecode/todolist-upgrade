@@ -23,7 +23,7 @@ class Header extends React.Component {
             const addItem = currentJob;
             headerProps(addItem);
             this.setState({
-                currentJob:''
+                currentJob:'',
             })
         }
     }
