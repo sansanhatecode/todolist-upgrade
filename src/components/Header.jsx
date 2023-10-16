@@ -9,10 +9,11 @@ class Header extends React.Component {
     }
 
     onChangeInput = (e) => {
-        const {value} = e.target.value;
+        const {value} = e.target;
         this.setState({
             currentJob: value,
         })
+        console.log (value)
     }
 
     handleKeyDown = (e) => {
@@ -21,14 +22,13 @@ class Header extends React.Component {
             const {headerProps} = this.props;
             const addItem = currentJob;
             headerProps(addItem);
+            this.setState({
+                currentJob:''
+            })
         }
     }
 
     render(){
-        // const {
-        //     handleAdd,
-        // } = this.props;
-
         const {job} = this.state;
         return (
             <div>
