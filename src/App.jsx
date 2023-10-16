@@ -19,10 +19,14 @@ class App extends React.Component {
 
     //them cong viec moi
     const handleAdd = (e) => {
-      currentJob.setState(e.target.value);
+      this.setState({
+        currentJob: e.target.value
+      });
       if(currentJob.trim() !==""){
         if (e.keyCode === 13) {
-          jobs.setState(prev => [...prev, currentJob]);
+          this.setState({
+            jobs: prev => [...prev, currentJob]
+          });
           e.target.value = '';
         }
     }
@@ -33,6 +37,7 @@ class App extends React.Component {
         <h1>todos</h1>
         <div>
           <Header 
+            job={currentJob}
             handleAdd={handleAdd}
           />
           <ContentList

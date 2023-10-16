@@ -6,11 +6,15 @@ class Header extends React.Component {
     }
 
     render(){
-        const {handleAdd} = this.props;
+        const {
+            handleAdd,
+            job,
+        } = this.props;
         return (
             <div>
                 <input 
                     type="text"
+                    value={job}
                     placeholder="Bạn cần làm công việc gì?"
                     onKeyDown = {(e) => handleAdd(e)}
                 />
