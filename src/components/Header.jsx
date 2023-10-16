@@ -25,9 +25,9 @@ class Header extends React.Component {
     }
 
     render(){
-        const {
-            handleAdd,
-        } = this.props;
+        // const {
+        //     handleAdd,
+        // } = this.props;
 
         const {job} = this.state;
         return (

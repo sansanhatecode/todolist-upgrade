@@ -19,8 +19,9 @@ class App extends React.Component {
 
     //them cong viec moi
     const handleAdd = (addItem) => {
+      const newJobs = [...jobs, addItem]
       this.setState({
-        jobs: prev => [...prev, addItem]
+        jobs: newJobs
       });
     }
 
