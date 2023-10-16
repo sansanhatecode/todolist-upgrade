@@ -7,38 +7,29 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentJob: '',
+      // currentJob: '',
       jobs: ["học bài", "đi ngủ"],
-      }
     }
+  }
   render() {
     const {
-      currentJob,
+      // currentJob,
       jobs
     } = this.state;
 
     //them cong viec moi
-    const handleAdd = (e) => {
+    const handleAdd = (addItem) => {
       this.setState({
-        currentJob: e.target.value
+        jobs: prev => [...prev, addItem]
       });
-      if(currentJob.trim() !==""){
-        if (e.keyCode === 13) {
-          this.setState({
-            jobs: prev => [...prev, currentJob]
-          });
-          e.target.value = '';
-        }
-    }
     }
 
     return (
-      <div>
-        <h1>todos</h1>
-        <div>
+      <div className="flex flex-col pt-20 items-center bg-slate-100 h-screen">
+        <h1 className="text-8xl text-red-200 font-bold mb-5">todos</h1>
+        <div className="border-2 border-red-200 rounded-sm">
           <Header 
-            job={currentJob}
-            handleAdd={handleAdd}
+            headerProps = {this.handleAdd}
           />
           <ContentList
             jobs={jobs}
@@ -46,7 +37,7 @@ class App extends React.Component {
         </div>
       </div>
     )
-    }
+  }
 }
 
 export default App;
