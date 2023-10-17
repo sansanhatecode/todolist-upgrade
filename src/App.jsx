@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import Header from './components/Header';
 import ContentList from './components/ContentList';
+import Footer from './components/Footer';
 
 class App extends React.Component {
   constructor(props) {
@@ -77,6 +78,56 @@ class App extends React.Component {
     // console.log(newJobs);
   }
 
+  //hien ra tat ca cac cong viec
+  handleAllButtonClick = () => {
+    const {jobs} = this.state;
+    let newJobs = jobs;
+    newJobs.map(job => (job.displayStatus = true))
+    this.setState({
+      jobs : newJobs,
+    })
+  }
+
+  //hien ra cac cong viec dang lam do
+  handleActiveButtonClick = () => {
+    const {jobs} = this.state;
+    let newJobs = jobs;
+    newJobs.map(job => job.displayStatus = true)
+    newJobs.map(job => {
+      if(job.done){
+        return job.displayStatus = false;
+      }
+    })
+    this.setState({
+      jobs : newJobs,
+    })
+  }
+
+  //hien ra cac cong viec da hoan thanh
+  handleCompletedButtonClick = () => {
+    const {jobs} = this.state;
+    let newJobs = jobs;
+    newJobs.map(job => job.displayStatus = true)
+    newJobs.map(job => {
+      if(!(job.done)){
+        return job.displayStatus = false;
+      }
+    })
+    this.setState({
+      jobs : newJobs,
+    })
+  }
+
+  //xoa cac cong viec da hoan thanh
+  handleClearButtonClick = () => {
+    const {jobs} = this.state;
+    let newJobs = jobs.filter(job => !(job.done));
+    // console.log(newJobs);
+    this.setState({
+      jobs : newJobs,
+    })
+  }
+
   render() {
     const {
       jobs
@@ -89,11 +140,19 @@ class App extends React.Component {
           <Header 
             headerProps={this.handleAdd}
             handleDownButtonClick={this.handleDownButtonClick}
+            jobs={jobs}
           />
           <ContentList
             jobs={jobs}
             handleDelete={this.handleDelete}
             handleDone={this.handleDone}
+          />
+          <Footer
+            jobs={jobs}
+            handleAllButtonClick={this.handleAllButtonClick}
+            handleActiveButtonClick={this.handleActiveButtonClick}
+            handleCompletedButtonClick={this.handleCompletedButtonClick}
+            handleClearButtonClick={this.handleClearButtonClick}
           />
         </div>
       </div>

@@ -34,7 +34,7 @@ class ContentList extends React.Component {
                   </button>
                   <li
                     key={index}
-                    className="py-3 tracking-wider text-lg flex justify-between w-full"
+                    className="py-3 tracking-wider text-xl flex justify-between w-full group"
                   >
                     {/* done button */}
 
@@ -43,9 +43,9 @@ class ContentList extends React.Component {
                     <button
                       id={index}
                       onClick={(e) => handleDelete(e)}
-                      className="w-8 h-8 pr-4"
+                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400"
                     >
-                      <i className="fa-solid fa-trash"></i>
+                      <i className="fa-solid fa-trash text-base"></i>
                     </button>
                   </li>
                 </div>
