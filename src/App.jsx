@@ -38,20 +38,29 @@ class App extends React.Component {
     // console.log(newJobs);
   }
 
+  //xoa cong viec duoc chon
   handleDelete = (e) => {
     const {jobs} = this.state;
-    console.log(jobs)
     let deleteId = e.currentTarget.id;
-    console.log(deleteId);
-    // console.log(e.currentTarget)
-    // const newJobs = jobs.splice(deleteId, 1);
-    // console.log(newJobs);
+    const newJobs = jobs;
+    newJobs.splice(deleteId, 1);
     this.setState({
-      jobs: jobs.splice(deleteId, 1),
+      jobs: newJobs,
     })
-    console.log(this.state)
   }
   
+
+  //danh dau cong viec duoc lam xong
+  handleDone = (e) => {
+    let doneId = e.currentTarget.id;
+    // console.log(e.currentTarget.id)
+    const {jobs} = this.state;
+    console.log(jobs);
+    const newJobs = jobs;
+    newJobs[doneId].done = true;
+    // console.log(newJobs[doneId]);
+  }
+
   render() {
     const {
       // currentJob,
@@ -68,6 +77,7 @@ class App extends React.Component {
           <ContentList
             jobs={jobs}
             handleDelete={this.handleDelete}
+            handleDone={this.handleDone}
           />
         </div>
       </div>
