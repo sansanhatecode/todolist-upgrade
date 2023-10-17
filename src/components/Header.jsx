@@ -29,11 +29,18 @@ class Header extends React.Component {
 
     render(){
         const {currentJob} = this.state;
+        const {handleDownButtonClick} = this.props;
         return (
-            <div>
+            <div className="flex gap-4 items-center border-red-200 border-b-2 bg-white pl-4">
+                <button
+                    className="w-8 h-8"
+                    onClick = {handleDownButtonClick}
+                >
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
                 <input 
                     className="
-                        pl-14 py-4 w-[500px] rounded-t-lg border-red-200 border-b-2 focus:outline-none text-xl
+                        py-4 w-[500px] rounded-t-lg  focus:outline-none text-xl
                         placeholder:text-gray-300 placeholder:italic"
                     type="text"
                     value={currentJob}

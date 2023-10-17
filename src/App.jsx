@@ -63,9 +63,22 @@ class App extends React.Component {
     })
   }
 
+  //danh dau tat ca cong viec da duoc lam xong (khong lam xong)
+  handleDownButtonClick = () => {
+    const {jobs} = this.state;
+    let jobsCheck = jobs;
+    //kiểm tra xem có phải tất cả các công việc đều đã được làm xong hay chưa?
+    const isNotDone = jobsCheck.some(job => !(job.done))
+    let newJobs = jobs;
+    newJobs.map(job => (job.done = isNotDone))
+    this.setState({
+      jobs : newJobs,
+    })
+    // console.log(newJobs);
+  }
+
   render() {
     const {
-      // currentJob,
       jobs
     } = this.state;
 
@@ -75,6 +88,7 @@ class App extends React.Component {
         <div className="border-2 border-red-200 rounded-sm">
           <Header 
             headerProps={this.handleAdd}
+            handleDownButtonClick={this.handleDownButtonClick}
           />
           <ContentList
             jobs={jobs}
