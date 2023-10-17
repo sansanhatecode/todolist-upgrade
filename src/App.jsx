@@ -55,10 +55,12 @@ class App extends React.Component {
     let doneId = e.currentTarget.id;
     // console.log(e.currentTarget.id)
     const {jobs} = this.state;
-    console.log(jobs);
     const newJobs = jobs;
-    newJobs[doneId].done = true;
-    // console.log(newJobs[doneId]);
+    newJobs[doneId].done = !jobs[doneId].done;
+    console.log(newJobs[doneId]);
+    this.setState({
+      jobs: newJobs,
+    })
   }
 
   render() {

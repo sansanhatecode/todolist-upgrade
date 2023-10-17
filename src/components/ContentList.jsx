@@ -23,9 +23,14 @@ class ContentList extends React.Component {
                   <button
                     id={index}
                     onClick={(e) => handleDone(e)}
-                    className="border-2 border-gray-200 w-8 h-8 rounded-full"
+                    className={`border-2 w-8 h-8 rounded-full ${job.done ? `border-green-400` :  `border-gray-200`} `}
                   >
-                    <i className="fa-solid fa-check"></i>
+                    <i className={`
+                      fa-solid fa-check
+                      text-green-400
+                      ${job.done ? `` :  `hidden`}
+                      `}>
+                    </i>
                   </button>
                   <li
                     key={index}
@@ -33,7 +38,7 @@ class ContentList extends React.Component {
                   >
                     {/* done button */}
 
-                    <p className="flex-3">{job.name}</p>
+                    <p className = {`${job.done ? `text-gray-300 line-through` :  ``}`}>{job.name}</p>
                     {/* delete button */}
                     <button
                       id={index}
