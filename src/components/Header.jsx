@@ -13,7 +13,6 @@ class Header extends React.Component {
         this.setState({
             currentJob: value,
         })
-        console.log (value)
     }
 
     handleKeyDown = (e) => {
@@ -33,10 +32,12 @@ class Header extends React.Component {
         return (
             <div>
                 <input 
-                    className="px-8 py-2 w-[400px] rounded-t-lg border-red-200 border-b-2"
+                    className="
+                        pl-14 py-4 w-[500px] rounded-t-lg border-red-200 border-b-2 focus:outline-none text-xl
+                        placeholder:text-gray-300 placeholder:italic"
                     type="text"
                     value={currentJob}
-                    placeholder="Bạn cần làm công việc gì?"
+                    placeholder="What needs to be done?"
                     onChange = {this.onChangeInput}
                     onKeyDown = {this.handleKeyDown}
                 />

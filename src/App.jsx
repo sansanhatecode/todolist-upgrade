@@ -8,17 +8,48 @@ class App extends React.Component {
     super(props);
     this.state = {
       // currentJob: '',
-      jobs: ["học bài", "đi ngủ"],
+      jobs: [
+        {
+          name:"học bài",
+          displayStatus: true,
+          done: false,
+        }, 
+        {
+          name:"đi ngủ",
+          displayStatus: true,
+          done: false,
+        },
+      ],
     }
   }
 
   //them cong viec moi
   handleAdd = (addItem) => {
+    const newJob = {
+      name:addItem,
+      displayStatus:true,
+      done:false,
+    }
     const {jobs} = this.state;
-    const newJobs = [...jobs, addItem];
+    const newJobs = [...jobs, newJob];
     this.setState({
       jobs: newJobs
     });
+    // console.log(newJobs);
+  }
+
+  handleDelete = (e) => {
+    const {jobs} = this.state;
+    console.log(jobs)
+    let deleteId = e.currentTarget.id;
+    console.log(deleteId);
+    // console.log(e.currentTarget)
+    // const newJobs = jobs.splice(deleteId, 1);
+    // console.log(newJobs);
+    this.setState({
+      jobs: jobs.splice(deleteId, 1),
+    })
+    console.log(this.state)
   }
   
   render() {
@@ -32,10 +63,11 @@ class App extends React.Component {
         <h1 className="text-8xl text-red-200 font-bold mb-5">todos</h1>
         <div className="border-2 border-red-200 rounded-sm">
           <Header 
-            headerProps = {this.handleAdd}
+            headerProps={this.handleAdd}
           />
           <ContentList
             jobs={jobs}
+            handleDelete={this.handleDelete}
           />
         </div>
       </div>
