@@ -11,12 +11,12 @@ class App extends React.Component {
       // currentJob: '',
       jobs: [
         {
-          name:"học bài",
+          name:"clean the house",
           displayStatus: true,
           done: false,
         }, 
         {
-          name:"đi ngủ",
+          name:"do the homework",
           displayStatus: true,
           done: false,
         },
