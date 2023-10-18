@@ -134,7 +134,7 @@ class App extends React.Component {
     } = this.state;
 
     return (
-      <div className="flex flex-col pt-20 items-center bg-slate-100 h-screen">
+      <div className="flex flex-col pt-20 items-center bg-slate-100 h-full min-h-screen pb-28">
         <h1 className="text-8xl text-red-200 font-bold mb-5">todos</h1>
         <div className="border-2 border-red-200 rounded-sm">
           <Header 

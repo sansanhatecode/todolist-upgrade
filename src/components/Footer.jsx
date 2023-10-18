@@ -50,7 +50,7 @@ class Footer extends React.Component {
         </div>
         <button
           onClick={handleClearButtonClick}
-          className={`px-2 border-2 rounded-lg hover:border-red-200`}
+          className={`px-2 border-2 rounded-lg hover:border-red-200 ${count === jobs.length ? `invisible` : `block`}`}
         >
           Clear Completed
         </button>
