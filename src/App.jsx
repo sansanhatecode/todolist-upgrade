@@ -32,8 +32,14 @@ class App extends React.Component {
       displayStatus:true,
       done:false,
     }
-    const {jobs} = this.state;
+    const {
+      jobs,
+      clickedFooterButton
+    } = this.state;
     const newJobs = [...jobs, newJob];
+    if(clickedFooterButton === "2"){
+      newJob.displayStatus = false
+    }
     this.setState({
       jobs: newJobs
     });
@@ -56,10 +62,20 @@ class App extends React.Component {
   handleDone = (e) => {
     let doneId = e.currentTarget.id;
     // console.log(e.currentTarget.id)
-    const {jobs} = this.state;
+    const {
+      jobs,
+      clickedFooterButton,
+    } = this.state;
     const newJobs = jobs;
     newJobs[doneId].done = !jobs[doneId].done;
-    console.log(newJobs[doneId]);
+    if(newJobs[doneId].done){
+      if(clickedFooterButton==="1"){
+        newJobs[doneId].displayStatus = false;
+      }
+      else newJobs[doneId].displayStatus = true;
+    } else if (clickedFooterButton==="2"){
+      newJobs[doneId].displayStatus = false;
+    } else newJobs[doneId].displayStatus = true;
     this.setState({
       jobs: newJobs,
     })
