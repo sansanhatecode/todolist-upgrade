@@ -12,6 +12,7 @@ class Footer extends React.Component {
       handleActiveButtonClick,
       handleCompletedButtonClick,
       handleClearButtonClick,
+      clickedFooterButton,
     } = this.props;
 
     //đếm số việc chưa hoàn thành
@@ -30,20 +31,23 @@ class Footer extends React.Component {
         </div>
         <div className="flex gap-2">
           <button
-            className="border-2 rounded-lg px-2 hover:border-red-200"
-            onClick={handleAllButtonClick}
+            id="0"
+            className={`px-2  hover:border-red-200  rounded-lg ${"0" === clickedFooterButton ? `bg-red-300 text-white border-0` : `border-2`}`}
+            onClick={(e) => handleAllButtonClick(e)}
           >
             All
           </button>
           <button
-            onClick={handleActiveButtonClick}
-            className="px-2 border-2 rounded-lg hover:border-red-200"
+            id="1"
+            className={`px-2  hover:border-red-200  rounded-lg ${"1" === clickedFooterButton ? `bg-red-300 text-white border-0` : `border-2`}`}
+            onClick={(e) => handleActiveButtonClick(e)}
           >
             Active
           </button>
           <button
-            onClick={handleCompletedButtonClick}
-            className="px-2 border-2 rounded-lg hover:border-red-200"
+            id="2"
+            className={`px-2  hover:border-red-200  rounded-lg ${"2" === clickedFooterButton ? `bg-red-300 text-white border-0` : `border-2`}`}
+            onClick={(e) => handleCompletedButtonClick(e)}
           >
             Completed
           </button>

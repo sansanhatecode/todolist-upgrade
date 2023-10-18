@@ -21,6 +21,7 @@ class App extends React.Component {
           done: false,
         },
       ],
+      clickedFooterButton:"0"
     }
   }
 
@@ -79,17 +80,21 @@ class App extends React.Component {
   }
 
   //hien ra tat ca cac cong viec
-  handleAllButtonClick = () => {
-    const {jobs} = this.state;
+  handleAllButtonClick = (e) => {
+    const {
+      jobs,
+    } = this.state;
     let newJobs = jobs;
     newJobs.map(job => (job.displayStatus = true))
+    console.log(e.currentTarget.id)
     this.setState({
       jobs : newJobs,
+      clickedFooterButton : e.currentTarget.id,
     })
   }
 
   //hien ra cac cong viec dang lam do
-  handleActiveButtonClick = () => {
+  handleActiveButtonClick = (e) => {
     const {jobs} = this.state;
     let newJobs = jobs;
     newJobs.map(job => job.displayStatus = true)
@@ -98,13 +103,15 @@ class App extends React.Component {
         return job.displayStatus = false;
       }
     })
+    console.log(e.currentTarget.id)
     this.setState({
       jobs : newJobs,
+      clickedFooterButton : e.currentTarget.id,
     })
   }
 
   //hien ra cac cong viec da hoan thanh
-  handleCompletedButtonClick = () => {
+  handleCompletedButtonClick = (e) => {
     const {jobs} = this.state;
     let newJobs = jobs;
     newJobs.map(job => job.displayStatus = true)
@@ -113,8 +120,10 @@ class App extends React.Component {
         return job.displayStatus = false;
       }
     })
+    console.log(e.currentTarget.id)
     this.setState({
       jobs : newJobs,
+      clickedFooterButton : e.currentTarget.id,
     })
   }
 
@@ -130,7 +139,8 @@ class App extends React.Component {
 
   render() {
     const {
-      jobs
+      jobs,
+      clickedFooterButton
     } = this.state;
 
     return (
@@ -153,6 +163,7 @@ class App extends React.Component {
             handleActiveButtonClick={this.handleActiveButtonClick}
             handleCompletedButtonClick={this.handleCompletedButtonClick}
             handleClearButtonClick={this.handleClearButtonClick}
+            clickedFooterButton={clickedFooterButton}
           />
         </div>
       </div>
