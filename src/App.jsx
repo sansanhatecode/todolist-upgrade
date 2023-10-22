@@ -3,12 +3,12 @@ import React from 'react';
 import Header from './components/Header';
 import ContentList from './components/ContentList';
 import Footer from './components/Footer';
+import PaginatedItems from './components/Pagination';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // currentJob: '',
       jobs: [
         {
           name:"clean the house",
@@ -21,61 +21,77 @@ class App extends React.Component {
           done: false,
         },
       ],
-      clickedFooterButton:"0"
+      filterButton:"0",
+      isEditting: false,
     }
   }
 
   //them cong viec moi
   handleAdd = (addItem) => {
-    const newJob = {
-      name:addItem,
-      displayStatus:true,
-      done:false,
-    }
     const {
       jobs,
-      clickedFooterButton
+      filterButton,
+      isEditting,
     } = this.state;
-    const newJobs = [...jobs, newJob];
-    if(clickedFooterButton === "2"){
-      newJob.displayStatus = false
+
+    //chỉnh sửa công việc cũ
+    if (isEditting) {
+      console.log(isEditting);
     }
-    this.setState({
-      jobs: newJobs
-    });
-    // console.log(newJobs);
+
+    //thêm công việc mới
+    else{
+      const newJob = {
+        name:addItem,
+        displayStatus:true,
+        done:false,
+      }
+      
+      const newJobs = [...jobs, newJob];
+      if(filterButton === "2"){
+        newJob.displayStatus = false
+      }
+      this.setState({
+        jobs: newJobs
+      });
+    }
   }
 
   //xoa cong viec duoc chon
-  handleDelete = (e) => {
+  handleDelete = (e, index) => {
     const {jobs} = this.state;
-    let deleteId = e.currentTarget.id;
-    const newJobs = jobs;
-    newJobs.splice(deleteId, 1);
+    const newJobs = [...jobs];
+    newJobs.splice(index, 1);
     this.setState({
       jobs: newJobs,
     })
   }
-  
+
+  //chinh sua mot cong viec
+  handleEdit = (e, index) => {
+    const {isEditting} = this.state;
+    this.setState({
+      isEditting: true,
+    });
+    console.log(this.state);
+  }
 
   //danh dau cong viec duoc lam xong
-  handleDone = (e) => {
-    let doneId = e.currentTarget.id;
-    // console.log(e.currentTarget.id)
+  handleDone = (e, index) => {
     const {
       jobs,
-      clickedFooterButton,
+      filterButton,
     } = this.state;
     const newJobs = jobs;
-    newJobs[doneId].done = !jobs[doneId].done;
-    if(newJobs[doneId].done){
-      if(clickedFooterButton==="1"){
-        newJobs[doneId].displayStatus = false;
+    newJobs[index].done = !jobs[index].done;
+    if(newJobs[index].done){
+      if(filterButton==="1"){
+        newJobs[index].displayStatus = false;
       }
-      else newJobs[doneId].displayStatus = true;
-    } else if (clickedFooterButton==="2"){
-      newJobs[doneId].displayStatus = false;
-    } else newJobs[doneId].displayStatus = true;
+      else newJobs[index].displayStatus = true;
+    } else if (filterButton==="2"){
+      newJobs[index].displayStatus = false;
+    } else newJobs[index].displayStatus = true;
     this.setState({
       jobs: newJobs,
     })
@@ -105,7 +121,7 @@ class App extends React.Component {
     console.log(e.currentTarget.id)
     this.setState({
       jobs : newJobs,
-      clickedFooterButton : e.currentTarget.id,
+      filterButton : e.currentTarget.id,
     })
   }
 
@@ -122,7 +138,7 @@ class App extends React.Component {
     console.log(e.currentTarget.id)
     this.setState({
       jobs : newJobs,
-      clickedFooterButton : e.currentTarget.id,
+      filterButton : e.currentTarget.id,
     })
   }
 
@@ -136,10 +152,9 @@ class App extends React.Component {
         return job.displayStatus = false;
       }
     })
-    console.log(e.currentTarget.id)
     this.setState({
       jobs : newJobs,
-      clickedFooterButton : e.currentTarget.id,
+      filterButton : e.currentTarget.id,
     })
   }
 
@@ -153,10 +168,29 @@ class App extends React.Component {
     })
   }
 
+  //Pagination
+  renderItems = (event, itemsPerPage, newOffset) => {
+    const {jobs} = this.state;
+    // let newJobs = [...jobs];
+    // for(let i = newOffset; i < newOffset + itemsPerPage; i++ ){
+    //   newJobs[i].displayStatus = true
+    // }
+    console.log("aaaaa");
+    const newJobs = jobs.map((job, index) => {
+      if(index >= newOffset && index < newOffset + itemsPerPage){
+        return job.displayStatus = true;
+      }
+      else return job.displayStatus = false; 
+    })
+    this.setState({
+      jobs : newJobs,
+    })
+  }
+
   render() {
     const {
       jobs,
-      clickedFooterButton
+      filterButton
     } = this.state;
 
     return (
@@ -172,6 +206,7 @@ class App extends React.Component {
             jobs={jobs}
             handleDelete={this.handleDelete}
             handleDone={this.handleDone}
+            handleEdit={this.handleEdit}
           />
           <Footer
             jobs={jobs}
@@ -179,9 +214,14 @@ class App extends React.Component {
             handleActiveButtonClick={this.handleActiveButtonClick}
             handleCompletedButtonClick={this.handleCompletedButtonClick}
             handleClearButtonClick={this.handleClearButtonClick}
-            clickedFooterButton={clickedFooterButton}
+            filterButton={filterButton}
           />
         </div>
+        <PaginatedItems
+          itemsPerPage={5}
+          items={jobs}
+          renderItems={this.renderItems}
+        />
       </div>
     )
   }

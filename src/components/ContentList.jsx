@@ -10,6 +10,7 @@ class ContentList extends React.Component {
       jobs,
       handleDelete,
       handleDone,
+      handleEdit,
     } = this.props;
 
     return (
@@ -19,35 +20,47 @@ class ContentList extends React.Component {
             //neu display status la true thi render ra phan tu
             if (job.displayStatus) {
               return (
-                <div className="flex gap-4 pl-4 border-b-2 last:border-none items-center">
+                <div className = "flex gap-4 pl-4 border-b-2 last:border-none items-center">
+                  {/* done button */}
                   <button
-                    id={index}
-                    onClick={(e) => handleDone(e)}
-                    className={`border-2 w-8 h-8 rounded-full ${job.done ? `border-green-400` :  `border-gray-200`} `}
+                    onClick = {(e) => handleDone(e, index)}
+                    className = {`
+                      border-2 w-8 h-8 rounded-full 
+                      ${job.done ? `border-green-400` :  `border-gray-200`}
+                      `}
                   >
-                    <i className={`
+                    <i className = {`
                       fa-solid fa-check
                       text-green-400
                       ${job.done ? `` :  `hidden`}
                       `}>
                     </i>
                   </button>
-                  <li
-                    key={index}
-                    className="py-3 tracking-wider text-xl flex justify-between w-full group"
-                  >
-                    {/* done button */}
 
+                  <li
+                    key = {index}
+                    className = "py-3 tracking-wider text-xl flex w-full group relative"
+                  >
                     <p className = {`${job.done ? `text-gray-300 line-through` :  ``}`}>{job.name}</p>
-                    {/* delete button */}
+
+                    {/* edit button */}
                     <button
                       id={index}
-                      onClick={(e) => handleDelete(e)}
-                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400"
+                      onClick = {(e) => handleEdit(e, index)}
+                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-1"
+                    >
+                      <i class="fa-solid fa-pencil text-base"></i>
+                    </button>
+
+                    {/* delete button */}
+                    <button
+                      onClick={(e) => handleDelete(e, index)}
+                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-10"
                     >
                       <i className="fa-solid fa-trash text-base"></i>
                     </button>
                   </li>
+
                 </div>
               )
             }
