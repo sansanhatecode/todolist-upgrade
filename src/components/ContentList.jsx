@@ -11,6 +11,8 @@ class ContentList extends React.Component {
       handleDelete,
       handleDone,
       handleEdit,
+      currentPage,
+      itemsPerPage
     } = this.props;
 
     return (
@@ -18,7 +20,7 @@ class ContentList extends React.Component {
         <ul>
           {jobs.map((job, index) => {
             //neu display status la true thi render ra phan tu
-            if (job.displayStatus) {
+            if (job.displayStatus && index < currentPage*itemsPerPage && index >= (currentPage-1)*itemsPerPage) {
               return (
                 <div className = "flex gap-4 pl-4 border-b-2 last:border-none items-center">
                   {/* done button */}

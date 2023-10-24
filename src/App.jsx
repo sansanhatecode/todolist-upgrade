@@ -3,11 +3,12 @@ import React from 'react';
 import Header from './components/Header';
 import ContentList from './components/ContentList';
 import Footer from './components/Footer';
+import Pagination from './components/Pagination';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.myHeader = React.createRef();
+    // this.myHeader = React.createRef();
     this.state = {
       jobs: [
         {
@@ -20,11 +21,35 @@ class App extends React.Component {
           displayStatus: true,
           done: false,
         },
+        {
+          name: "play games",
+          displayStatus: true,
+          done: false,
+        },
+        {
+          name: "watch TV",
+          displayStatus: true,
+          done: false,
+        },
+        {
+          name: "cook meals",
+          displayStatus: true,
+          done: false,
+        },
+        {
+          name: "study Japanese",
+          displayStatus: true,
+          done: false,
+        },
       ],
       filterButton: "0",
+      totalPages: 2,
+      currentPage: 1,
       // isEditting: false,
     }
   }
+
+  itemsPerPage = 5;
 
   //them cong viec moi
   handleAdd = (addItem) => {
@@ -33,32 +58,54 @@ class App extends React.Component {
       filterButton,
       // isEditting,
     } = this.state;
-
-    //thêm công việc mới
-
     const newJob = {
       name: addItem,
       displayStatus: true,
       done: false,
     }
-
-    const newJobs = [...jobs, newJob];
+    const newJobs = [newJob,...jobs];
     if (filterButton === "2") {
       newJob.displayStatus = false
     }
+    //tổng số phần tử được display
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
+
     this.setState({
-      jobs: newJobs
+      jobs: newJobs,
+      totalPages: newTotalPages,
     });
 
   }
 
   //xoa cong viec duoc chon
   handleDelete = (e, index) => {
-    const { jobs } = this.state;
+    const { jobs, currentPage } = this.state;
     const newJobs = [...jobs];
     newJobs.splice(index, 1);
+    //tổng số phần tử được display
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
+    let newCurrentPage = currentPage;
+    if(!(totalItems%5)){
+      newCurrentPage = currentPage - 1;
+    }
     this.setState({
       jobs: newJobs,
+      totalPages: newTotalPages,
+      currentPage: newCurrentPage,
     })
   }
 
@@ -68,7 +115,8 @@ class App extends React.Component {
     // this.setState({
     //   isEditting: true,
     // });
-    this.myHeader.current.focus();
+    // 
+    console.log("cíu em em làm không nổi nó cứ lỗi thôi =((")
   }
 
   //danh dau cong viec duoc lam xong
@@ -118,6 +166,20 @@ class App extends React.Component {
       jobs: newJobs,
       filterButton: e.currentTarget.id,
     })
+    //tổng số phần tử được display
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
+    this.setState({
+      jobs: newJobs,
+      totalPages: newTotalPages,
+      currentPage: 1,
+    })
   }
 
   //hien ra cac cong viec dang lam do
@@ -130,10 +192,21 @@ class App extends React.Component {
         return job.displayStatus = false;
       }
     })
-    console.log(e.currentTarget.id)
+    // console.log(e.currentTarget.id)
+    //tổng số phần tử được display
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
     this.setState({
       jobs: newJobs,
       filterButton: e.currentTarget.id,
+      totalPages: newTotalPages,
+      currentPage: 1,
     })
   }
 
@@ -147,9 +220,19 @@ class App extends React.Component {
         return job.displayStatus = false;
       }
     })
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
     this.setState({
       jobs: newJobs,
       filterButton: e.currentTarget.id,
+      totalPages: newTotalPages,
+      currentPage: 1,
     })
   }
 
@@ -158,25 +241,43 @@ class App extends React.Component {
     const { jobs } = this.state;
     let newJobs = jobs.filter(job => !(job.done));
     // console.log(newJobs);
+    // 
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
     this.setState({
       jobs: newJobs,
+      totalPages: newTotalPages,
+    })
+  }
+
+  handlePageClick = (e, i) => {
+    this.setState ({
+      currentPage: i,
     })
   }
 
   render() {
     const {
       jobs,
-      filterButton
+      filterButton,
+      totalPages,
+      currentPage
     } = this.state;
 
-    console.log(this.myHeader.current);
+    // console.log(this.myHeader.current);
 
     return (
-      <div className="flex flex-col pt-20 items-center bg-slate-100 h-full min-h-screen pb-28">
+      <div className="flex flex-col pt-20 items-center bg-slate-100 h-full min-h-screen pb-28 relative">
         <h1 className="text-8xl text-red-200 font-bold mb-5">todos</h1>
-        <div className="border-2 border-red-200 rounded-sm">
+        <div className="border-2 border-red-200 rounded-sm mb-4">
           <Header
-            ref={this.myHeader}
+            // ref={this.myHeader}
             headerProps={this.handleAdd}
             handleDownButtonClick={this.handleDownButtonClick}
             jobs={jobs}
@@ -186,6 +287,8 @@ class App extends React.Component {
             handleDelete={this.handleDelete}
             handleDone={this.handleDone}
             handleEdit={this.handleEdit}
+            currentPage={currentPage}
+            itemsPerPage={this.itemsPerPage}
           />
           <Footer
             jobs={jobs}
@@ -196,6 +299,11 @@ class App extends React.Component {
             filterButton={filterButton}
           />
         </div>
+        <Pagination
+          totalPages={totalPages}
+          handlePageClick={this.handlePageClick}
+          currentPage={currentPage}
+        />
       </div>
     )
   }
