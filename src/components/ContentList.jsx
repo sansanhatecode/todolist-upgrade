@@ -46,8 +46,9 @@ class ContentList extends React.Component {
                     {/* edit button */}
                     <button
                       id={index}
-                      onClick = {(e) => handleEdit(e, index)}
-                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-1"
+                      // onClick = {(e) => handleEdit(e, index)}
+                      onClick={handleEdit}
+                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-10"
                     >
                       <i class="fa-solid fa-pencil text-base"></i>
                     </button>
@@ -55,7 +56,7 @@ class ContentList extends React.Component {
                     {/* delete button */}
                     <button
                       onClick={(e) => handleDelete(e, index)}
-                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-10"
+                      className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-1"
                     >
                       <i className="fa-solid fa-trash text-base"></i>
                     </button>
