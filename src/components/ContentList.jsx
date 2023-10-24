@@ -43,13 +43,13 @@ class ContentList extends React.Component {
                     key = {index}
                     className = "py-3 tracking-wider text-xl flex w-full group relative"
                   >
-                    <p className = {`${job.done ? `text-gray-300 line-through` :  ``}`}>{job.name}</p>
+                    <p className = {`${job.done ? `text-gray-300 line-through` :  ``} ${job.isEditting ? `text-gray-300`: ``}`}>{job.name}</p>
 
                     {/* edit button */}
                     <button
                       id={index}
                       // onClick = {(e) => handleEdit(e, index)}
-                      onClick={handleEdit}
+                      onClick={(e) => handleEdit(e, index)}
                       className="w-8 pr-4 hidden text-red-200 group-hover:block hover:text-red-400 absolute right-10"
                     >
                       <i class="fa-solid fa-pencil text-base"></i>

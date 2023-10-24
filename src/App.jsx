@@ -8,44 +8,49 @@ import Pagination from './components/Pagination';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // this.myHeader = React.createRef();
+    this.headerRef = React.createRef();
     this.state = {
       jobs: [
         {
           name: "clean the house",
           displayStatus: true,
           done: false,
+          isEditting: false,
         },
         {
           name: "do the homework",
           displayStatus: true,
           done: false,
+          isEditting: false,
         },
         {
           name: "play games",
           displayStatus: true,
           done: false,
+          isEditting: false,
         },
         {
           name: "watch TV",
           displayStatus: true,
           done: false,
+          isEditting: false,
         },
         {
           name: "cook meals",
           displayStatus: true,
           done: false,
+          isEditting: false,
         },
         {
           name: "study Japanese",
           displayStatus: true,
           done: false,
+          isEditting: false,
         },
       ],
       filterButton: "0",
       totalPages: 2,
       currentPage: 1,
-      // isEditting: false,
     }
   }
 
@@ -56,31 +61,45 @@ class App extends React.Component {
     const {
       jobs,
       filterButton,
-      // isEditting,
     } = this.state;
-    const newJob = {
-      name: addItem,
-      displayStatus: true,
-      done: false,
-    }
-    const newJobs = [newJob,...jobs];
-    if (filterButton === "2") {
-      newJob.displayStatus = false
-    }
-    //tổng số phần tử được display
-    let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
-        totalItems++;
+    let newJobs = [...jobs];
+    if (newJobs.some(job => job.isEditting)) {
+      for(let i = 0; i < jobs.length; i++){
+        if(newJobs[i].isEditting){
+          newJobs[i].name = addItem;
+          newJobs[i].isEditting = false;
+        }
       }
+      this.setState({
+        jobs: newJobs,
+      })
     }
-    //tổng số trang mới
-    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
+    else {
+      const newJob = {
+        name: addItem,
+        displayStatus: true,
+        done: false,
+        isEditting: false,
+      }
+      newJobs = [newJob, ...jobs];
+      if (filterButton === "2") {
+        newJob.displayStatus = false
+      }
+      //tổng số phần tử được display
+      let totalItems = 0;
+      for (let i = 0; i < newJobs.length; i++) {
+        if (newJobs[i].displayStatus) {
+          totalItems++;
+        }
+      }
+      //tổng số trang mới
+      const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
+      this.setState({
+        jobs: newJobs,
+        totalPages: newTotalPages,
+      });
+    }
 
-    this.setState({
-      jobs: newJobs,
-      totalPages: newTotalPages,
-    });
 
   }
 
@@ -91,15 +110,15 @@ class App extends React.Component {
     newJobs.splice(index, 1);
     //tổng số phần tử được display
     let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
         totalItems++;
       }
     }
     //tổng số trang mới
     const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
     let newCurrentPage = currentPage;
-    if(!(totalItems%5)){
+    if (!(totalItems % 5)) {
       newCurrentPage = currentPage - 1;
     }
     this.setState({
@@ -111,12 +130,16 @@ class App extends React.Component {
 
   //chinh sua mot cong viec
   handleEdit = (e, index) => {
-    // const { isEditting } = this.state;
-    // this.setState({
-    //   isEditting: true,
-    // });
-    // 
-    console.log("cíu em em làm không nổi nó cứ lỗi thôi =((")
+    if (this.headerRef.current) {
+      this.headerRef.current.focusInput();
+    }
+    const { jobs } = this.state;
+    let newJobs = [...jobs];
+    newJobs[index].isEditting = true;
+    console.log(newJobs[index]);
+    this.setState({
+      jobs: newJobs,
+    })
   }
 
   //danh dau cong viec duoc lam xong
@@ -137,8 +160,8 @@ class App extends React.Component {
     } else newJobs[index].displayStatus = true;
     //tổng số phần tử được display
     let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
         totalItems++;
       }
     }
@@ -179,8 +202,8 @@ class App extends React.Component {
     })
     //tổng số phần tử được display
     let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
         totalItems++;
       }
     }
@@ -206,8 +229,8 @@ class App extends React.Component {
     // console.log(e.currentTarget.id)
     //tổng số phần tử được display
     let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
         totalItems++;
       }
     }
@@ -232,8 +255,8 @@ class App extends React.Component {
       }
     })
     let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
         totalItems++;
       }
     }
@@ -254,8 +277,8 @@ class App extends React.Component {
     // console.log(newJobs);
     // 
     let totalItems = 0;
-    for(let i = 0; i < newJobs.length; i ++){
-      if (newJobs[i].displayStatus){
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
         totalItems++;
       }
     }
@@ -268,7 +291,7 @@ class App extends React.Component {
   }
 
   handlePageClick = (e, i) => {
-    this.setState ({
+    this.setState({
       currentPage: i,
     })
   }
@@ -288,8 +311,8 @@ class App extends React.Component {
         <h1 className="text-8xl text-red-200 font-bold mb-5">todos</h1>
         <div className="border-2 border-red-200 rounded-sm mb-4">
           <Header
-            // ref={this.myHeader}
-            headerProps={this.handleAdd}
+            ref={this.headerRef}
+            handleAdd={this.handleAdd}
             handleDownButtonClick={this.handleDownButtonClick}
             jobs={jobs}
           />

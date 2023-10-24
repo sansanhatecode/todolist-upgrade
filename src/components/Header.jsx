@@ -6,6 +6,14 @@ class Header extends React.Component {
     this.state = {
       currentJob: '',
     }
+    this.inputRef = React.createRef();
+  }
+
+  // Focus vao the input
+  focusInput() {
+    if (this.inputRef.current) {
+      this.inputRef.current.focus();
+    }
   }
 
   onChangeInput = (e) => {
@@ -18,9 +26,9 @@ class Header extends React.Component {
   handleKeyDown = (e) => {
     if (e.key === "Enter") {
       const { currentJob } = this.state;
-      const { headerProps } = this.props;
+      const { handleAdd } = this.props;
       const addItem = currentJob;
-      headerProps(addItem);
+      handleAdd(addItem);
       this.setState({
         currentJob: '',
       })
@@ -45,6 +53,7 @@ class Header extends React.Component {
           <i className= {`fa-solid fa-chevron-down ${isNotDone ? `text-gray-200}` : 'text-gray-500'}`}></i>
         </button>
         <input
+          ref={this.inputRef}
           className="
                         py-4 w-[500px] rounded-t-lg  focus:outline-none text-2xl
                         placeholder:text-gray-300 placeholder:italic"
