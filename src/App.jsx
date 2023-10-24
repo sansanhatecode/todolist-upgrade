@@ -135,8 +135,19 @@ class App extends React.Component {
     } else if (filterButton === "2") {
       newJobs[index].displayStatus = false;
     } else newJobs[index].displayStatus = true;
+    //tổng số phần tử được display
+    let totalItems = 0;
+    for(let i = 0; i < newJobs.length; i ++){
+      if (newJobs[i].displayStatus){
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
     this.setState({
       jobs: newJobs,
+      totalPages: newTotalPages,
+      currentPage: 1,
     })
   }
 
