@@ -4,6 +4,8 @@ import Header from './components/Header';
 import ContentList from './components/ContentList';
 import Footer from './components/Footer';
 import Pagination from './components/Pagination';
+import Theme from './components/Theme';
+import ThemeContext from './context/ThemeContext';
 
 class App extends React.Component {
   constructor(props) {
@@ -51,6 +53,7 @@ class App extends React.Component {
       filterButton: "0",
       totalPages: 2,
       currentPage: 1,
+      theme: "light"
     }
   }
 
@@ -118,7 +121,7 @@ class App extends React.Component {
     //tổng số trang mới
     const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
     let newCurrentPage = currentPage;
-    if (!(totalItems % 5)) {
+    if (index % 5 === 0 && currentPage > 1 && index === jobs.length - 1) {
       newCurrentPage = currentPage - 1;
     }
     this.setState({
@@ -195,7 +198,6 @@ class App extends React.Component {
     } = this.state;
     let newJobs = jobs;
     newJobs.map(job => (job.displayStatus = true))
-    console.log(e.currentTarget.id)
     this.setState({
       jobs: newJobs,
       filterButton: e.currentTarget.id,
@@ -296,20 +298,38 @@ class App extends React.Component {
     })
   }
 
+  handleChangeTheme = (e) => {
+    if(e.target.checked) {
+      this.setState ({
+        theme:"dark"
+      })
+    }
+    else {
+      this.setState ({
+        theme:"light"
+      })
+    }
+  }
+
   render() {
     const {
       jobs,
       filterButton,
       totalPages,
-      currentPage
+      currentPage,
+      theme
     } = this.state;
 
     // console.log(this.myHeader.current);
 
     return (
-      <div className="flex flex-col pt-20 items-center bg-slate-100 h-full min-h-screen pb-28 relative">
-        <h1 className="text-8xl text-red-200 font-bold mb-5">todos</h1>
-        <div className="border-2 border-red-200 rounded-sm mb-4">
+      <ThemeContext.Provider value = {theme}>
+      <div className={`flex flex-col pt-20 items-center  h-full min-h-screen pb-28 relative ${theme==='light' ? `bg-slate-100` : `bg-gray-900`}`}>
+        <Theme
+          handleChangeTheme={this.handleChangeTheme}
+        />
+        <h1 className={`text-8xl font-bold mb-5 ${theme==='light' ? `text-red-200` : `text-blue-900`}`}>todos</h1>
+        <div className={`border-2  rounded-sm mb-4 ${theme==='light' ? `border-red-200 bg-white` : `border-blue-400 bg-gray-700`}`}>
           <Header
             ref={this.headerRef}
             handleAdd={this.handleAdd}
@@ -339,6 +359,7 @@ class App extends React.Component {
           currentPage={currentPage}
         />
       </div>
+      </ThemeContext.Provider>
     )
   }
 }
