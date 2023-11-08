@@ -15,7 +15,8 @@ class ContentList extends React.Component {
       handleDone,
       handleEdit,
       currentPage,
-      itemsPerPage
+      itemsPerPage,
+      editId,
     } = this.props;
 
     let theme = this.context;
@@ -50,12 +51,15 @@ class ContentList extends React.Component {
                     key = {index}
                     className = {`py-3 tracking-wider text-xl flex w-full group relative ${theme === "light" ? `` : `text-white`}`}
                   >
-                    <p className = {`${job.done ? `text-gray-300 line-through` :  ``} ${job.isEditting ? `text-gray-300`: ``}`}>{job.name}</p>
+                    <p className =  {`${job.done ? `text-gray-300 line-through` :  ``} 
+                                      ${index === editId && theme ==="light"? `text-gray-300`: ``}
+                                      ${index === editId && theme ==="dark"? `text-gray-600`: ``}`} 
+                    >{job.name}
+                    </p>
 
                     {/* edit button */}
                     <button
                       id={index}
-                      // onClick = {(e) => handleEdit(e, index)}
                       onClick={(e) => handleEdit(e, index)}
                       className={`w-8 pr-4 hidden  group-hover:block  absolute right-10
                                   ${theme === "light" ? `text-red-200 hover:text-red-400` : `text-blue-400 hover:text-blue-800`}`}

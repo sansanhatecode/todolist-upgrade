@@ -18,6 +18,12 @@ class Header extends React.Component {
     if (this.inputRef.current) {
       this.inputRef.current.focus();
     }
+    const {jobs, editId} = this.props;
+    const value = jobs[editId].name;
+    console.log(editId)
+    this.setState({
+      currentJob: value,
+    })
   }
 
   onChangeInput = (e) => {
@@ -30,9 +36,10 @@ class Header extends React.Component {
   handleKeyDown = (e) => {
     if (e.key === "Enter") {
       const { currentJob } = this.state;
-      const { handleAdd } = this.props;
+      const { handleAdd, handleFinishEdit, editId } = this.props;
       const addItem = currentJob;
-      handleAdd(addItem);
+      if(editId === -1) handleAdd(addItem);
+      else handleFinishEdit(addItem);
       this.setState({
         currentJob: '',
       })
@@ -59,7 +66,7 @@ class Header extends React.Component {
         </button>
         <input
           ref={this.inputRef}
-          className={`  ${theme === "light" ? `border-red-200 bg-white placeholder:text-gray-300` : `border-blue-400 bg-gray-700 placeholder:text-gray-500`}
+          className={`  ${theme === "light" ? `border-red-200 bg-white placeholder:text-gray-300 text-black` : `border-blue-400 bg-gray-700 placeholder:text-gray-500 text-gray-200`}
                         py-4 w-[500px] rounded-t-lg  focus:outline-none text-2xl
                          placeholder:italic `}
           type="text"

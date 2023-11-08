@@ -17,43 +17,44 @@ class App extends React.Component {
           name: "clean the house",
           displayStatus: true,
           done: false,
-          isEditting: false,
+          // isEditting: false,
         },
         {
           name: "do the homework",
           displayStatus: true,
           done: false,
-          isEditting: false,
+          // isEditting: false,
         },
         {
           name: "play games",
           displayStatus: true,
           done: false,
-          isEditting: false,
+          // isEditting: false,
         },
         {
           name: "watch TV",
           displayStatus: true,
           done: false,
-          isEditting: false,
+          // isEditting: false,
         },
         {
           name: "cook meals",
           displayStatus: true,
           done: false,
-          isEditting: false,
+          // isEditting: false,
         },
         {
           name: "study Japanese",
           displayStatus: true,
           done: false,
-          isEditting: false,
+          // isEditting: false,
         },
       ],
       filterButton: "0",
       totalPages: 2,
       currentPage: 1,
-      theme: "light"
+      theme: "light",
+      editId: -1,
     }
   }
 
@@ -66,44 +67,39 @@ class App extends React.Component {
       filterButton,
     } = this.state;
     let newJobs = [...jobs];
-    if (newJobs.some(job => job.isEditting)) {
-      for(let i = 0; i < jobs.length; i++){
-        if(newJobs[i].isEditting){
-          newJobs[i].name = addItem;
-          newJobs[i].isEditting = false;
-        }
-      }
-      this.setState({
-        jobs: newJobs,
-      })
+    const newJob = {
+      name: addItem,
+      displayStatus: true,
+      done: false,
+      // isEditting: false,
     }
-    else {
-      const newJob = {
-        name: addItem,
-        displayStatus: true,
-        done: false,
-        isEditting: false,
-      }
-      newJobs = [newJob, ...jobs];
-      if (filterButton === "2") {
-        newJob.displayStatus = false
-      }
-      //tổng số phần tử được display
-      let totalItems = 0;
-      for (let i = 0; i < newJobs.length; i++) {
-        if (newJobs[i].displayStatus) {
-          totalItems++;
-        }
-      }
-      //tổng số trang mới
-      const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
-      this.setState({
-        jobs: newJobs,
-        totalPages: newTotalPages,
-      });
+    newJobs = [newJob, ...jobs];
+    if (filterButton === "2") {
+      newJob.displayStatus = false
     }
+    //tổng số phần tử được display
+    let totalItems = 0;
+    for (let i = 0; i < newJobs.length; i++) {
+      if (newJobs[i].displayStatus) {
+        totalItems++;
+      }
+    }
+    //tổng số trang mới
+    const newTotalPages = Math.ceil(totalItems / this.itemsPerPage);
+    this.setState({
+      jobs: newJobs,
+      totalPages: newTotalPages,
+    });
+  }
 
-
+  handleFinishEdit = (addItem) => {
+    const{jobs, editId} = this.state;
+    let newJobs = [...jobs];
+    newJobs[editId].name = addItem;
+    this.setState({
+      jobs:newJobs,
+      editId: -1,
+    })
   }
 
   //xoa cong viec duoc chon
@@ -133,16 +129,16 @@ class App extends React.Component {
 
   //chinh sua mot cong viec
   handleEdit = (e, index) => {
+    const { editId } = this.state;
+    // let newJobs = [...jobs];
+    // newJobs[index].isEditting = true;
+      this.setState({
+      editId: index,
+      })
     if (this.headerRef.current) {
       this.headerRef.current.focusInput();
     }
-    const { jobs } = this.state;
-    let newJobs = [...jobs];
-    newJobs[index].isEditting = true;
-    console.log(newJobs[index]);
-    this.setState({
-      jobs: newJobs,
-    })
+    console.log(editId)
   }
 
   //danh dau cong viec duoc lam xong
@@ -228,7 +224,6 @@ class App extends React.Component {
         return job.displayStatus = false;
       }
     })
-    // console.log(e.currentTarget.id)
     //tổng số phần tử được display
     let totalItems = 0;
     for (let i = 0; i < newJobs.length; i++) {
@@ -276,8 +271,6 @@ class App extends React.Component {
   handleClearButtonClick = () => {
     const { jobs } = this.state;
     let newJobs = jobs.filter(job => !(job.done));
-    // console.log(newJobs);
-    // 
     let totalItems = 0;
     for (let i = 0; i < newJobs.length; i++) {
       if (newJobs[i].displayStatus) {
@@ -299,14 +292,14 @@ class App extends React.Component {
   }
 
   handleChangeTheme = (e) => {
-    if(e.target.checked) {
-      this.setState ({
-        theme:"dark"
+    if (e.target.checked) {
+      this.setState({
+        theme: "dark"
       })
     }
     else {
-      this.setState ({
-        theme:"light"
+      this.setState({
+        theme: "light"
       })
     }
   }
@@ -317,48 +310,52 @@ class App extends React.Component {
       filterButton,
       totalPages,
       currentPage,
-      theme
+      theme,
+      editId
     } = this.state;
 
     // console.log(this.myHeader.current);
 
     return (
-      <ThemeContext.Provider value = {theme}>
-      <div className={`flex flex-col pt-20 items-center  h-full min-h-screen pb-28 relative ${theme==='light' ? `bg-slate-100` : `bg-gray-900`}`}>
-        <Theme
-          handleChangeTheme={this.handleChangeTheme}
-        />
-        <h1 className={`text-8xl font-bold mb-5 ${theme==='light' ? `text-red-200` : `text-blue-900`}`}>todos</h1>
-        <div className={`border-2  rounded-sm mb-4 ${theme==='light' ? `border-red-200 bg-white` : `border-blue-400 bg-gray-700`}`}>
-          <Header
-            ref={this.headerRef}
-            handleAdd={this.handleAdd}
-            handleDownButtonClick={this.handleDownButtonClick}
-            jobs={jobs}
+      <ThemeContext.Provider value={theme}>
+        <div className={`flex flex-col pt-20 items-center  h-full min-h-screen pb-28 relative ${theme === 'light' ? `bg-slate-100` : `bg-gray-900`}`}>
+          <Theme
+            handleChangeTheme={this.handleChangeTheme}
           />
-          <ContentList
-            jobs={jobs}
-            handleDelete={this.handleDelete}
-            handleDone={this.handleDone}
-            handleEdit={this.handleEdit}
+          <h1 className={`text-8xl font-bold mb-5 ${theme === 'light' ? `text-red-200` : `text-blue-900`}`}>todos</h1>
+          <div className={`border-2  rounded-sm mb-4 ${theme === 'light' ? `border-red-200 bg-white` : `border-blue-400 bg-gray-700`}`}>
+            <Header
+              editId={editId}
+              ref={this.headerRef}
+              handleAdd={this.handleAdd}
+              handleDownButtonClick={this.handleDownButtonClick}
+              handleFinishEdit={this.handleFinishEdit}
+              jobs={jobs}
+            />
+            <ContentList
+              jobs={jobs}
+              handleDelete={this.handleDelete}
+              handleDone={this.handleDone}
+              handleEdit={this.handleEdit}
+              editId={editId}
+              currentPage={currentPage}
+              itemsPerPage={this.itemsPerPage}
+            />
+            <Footer
+              jobs={jobs}
+              handleAllButtonClick={this.handleAllButtonClick}
+              handleActiveButtonClick={this.handleActiveButtonClick}
+              handleCompletedButtonClick={this.handleCompletedButtonClick}
+              handleClearButtonClick={this.handleClearButtonClick}
+              filterButton={filterButton}
+            />
+          </div>
+          <Pagination
+            totalPages={totalPages}
+            handlePageClick={this.handlePageClick}
             currentPage={currentPage}
-            itemsPerPage={this.itemsPerPage}
-          />
-          <Footer
-            jobs={jobs}
-            handleAllButtonClick={this.handleAllButtonClick}
-            handleActiveButtonClick={this.handleActiveButtonClick}
-            handleCompletedButtonClick={this.handleCompletedButtonClick}
-            handleClearButtonClick={this.handleClearButtonClick}
-            filterButton={filterButton}
           />
         </div>
-        <Pagination
-          totalPages={totalPages}
-          handlePageClick={this.handlePageClick}
-          currentPage={currentPage}
-        />
-      </div>
       </ThemeContext.Provider>
     )
   }
